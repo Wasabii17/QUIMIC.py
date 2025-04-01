@@ -1,13 +1,15 @@
 import streamlit as st
 import sympy as sp
+import numpy as np
+import pandas as pd
 
-def balance_combustion(formula):
+def balance_combustion(carbonos, hidrogenos):
     """ Balancea la ecuación de combustión de un hidrocarburo """
-    carbonos, hidrogenos = formula
-    oxigenos_reactivos = sp.Symbol("O2")
-    ecuacion = sp.Eq(carbonos * sp.Symbol("CO2") + (hidrogenos / 2) * sp.Symbol("H2O"), oxigenos_reactivos * 2)
-    solucion = sp.solve(ecuacion, oxigenos_reactivos)
-    
+    O2 = sp.Symbol("O2")
+    CO2 = sp.Symbol("CO2")
+    H2O = sp.Symbol("H2O")
+    ecuacion = sp.Eq(carbonos * CO2 + (hidrogenos / 2) * H2O, O2 * 2)
+    solucion = sp.solve(ecuacion, O2)
     return f"C{carbonos}H{hidrogenos} + {solucion[0]} O2 -> {carbonos} CO2 + {hidrogenos / 2} H2O"
 
 def main():
@@ -16,14 +18,14 @@ def main():
     carbonos = st.number_input("Número de carbonos", min_value=1, step=1)
     
     if tipo == "Alcano":
-        formula = (carbonos, carbonos * 2 + 2)
+        hidrogenos = carbonos * 2 + 2
     elif tipo == "Alqueno":
-        formula = (carbonos, carbonos * 2)
+        hidrogenos = carbonos * 2
     elif tipo == "Alquino":
-        formula = (carbonos, carbonos * 2 - 2)
+        hidrogenos = carbonos * 2 - 2
     
     if st.button("Balancear Ecuación"):
-        ecuacion_balanceada = balance_combustion(formula)
+        ecuacion_balanceada = balance_combustion(carbonos, hidrogenos)
         st.write("Ecuación balanceada:")
         st.latex(ecuacion_balanceada)
 
