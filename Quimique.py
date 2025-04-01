@@ -5,7 +5,11 @@ import pandas as pd
 def balance_combustion(carbonos, hidrogenos):
     """ Balancea la ecuación de combustión de un hidrocarburo sin usar sympy """
     oxigenos_reactivos = (carbonos * 2 + hidrogenos / 2)
-    return f"C{carbonos}H{hidrogenos} + {oxigenos_reactivos/2} O2 -> {carbonos} CO2 + {hidrogenos / 2} H2O"
+    
+    # Asegurar que todos los coeficientes sean enteros
+    factor = 2 if oxigenos_reactivos % 2 != 0 else 1
+
+    return f"{factor}C_{carbonos}H_{hidrogenos} + {int(oxigenos_reactivos * factor / 2)} O_2 \\rightarrow {carbonos * factor} CO_2 + {int(hidrogenos * factor / 2)} H_2O"
 
 def main():
     st.title("Balanceador de Combustión de Hidrocarburos")
@@ -26,3 +30,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
