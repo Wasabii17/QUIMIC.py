@@ -1,16 +1,11 @@
 import streamlit as st
-import sympy as sp
 import numpy as np
 import pandas as pd
 
 def balance_combustion(carbonos, hidrogenos):
-    """ Balancea la ecuación de combustión de un hidrocarburo """
-    O2 = sp.Symbol("O2")
-    CO2 = sp.Symbol("CO2")
-    H2O = sp.Symbol("H2O")
-    ecuacion = sp.Eq(carbonos * CO2 + (hidrogenos / 2) * H2O, O2 * 2)
-    solucion = sp.solve(ecuacion, O2)
-    return f"C{carbonos}H{hidrogenos} + {solucion[0]} O2 -> {carbonos} CO2 + {hidrogenos / 2} H2O"
+    """ Balancea la ecuación de combustión de un hidrocarburo sin usar sympy """
+    oxigenos_reactivos = (carbonos * 2 + hidrogenos / 2)
+    return f"C{carbonos}H{hidrogenos} + {oxigenos_reactivos/2} O2 -> {carbonos} CO2 + {hidrogenos / 2} H2O"
 
 def main():
     st.title("Balanceador de Combustión de Hidrocarburos")
